@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>Butterfly AI Stories needs access to your photos to turn them into stories.</string>
+	<key>NSCameraUsageDescription</key>
+	<string>Butterfly AI Stories can use your camera to capture a photo for your story.</string>
+	<key>API_BASE_URL_DEVICE_DEV</key>
+	<string>https://usrkicui31.execute-api.us-east-2.amazonaws.com/default/deviceRegistration</string>
+	<key>API_BASE_URL_DEVICE_PROD</key>
+	<string>https://usrkicui31.execute-api.us-east-2.amazonaws.com/default/deviceRegistration</string>
+	<key>API_BASE_URL_STORY_DEV</key>
+	<string>https://xvtiqdvvje.execute-api.us-east-2.amazonaws.com/generateStoryStage/generateStory</string>
+	<key>API_BASE_URL_STORY_PROD</key>
+	<string>https://xvtiqdvvje.execute-api.us-east-2.amazonaws.com/generateStoryStage/generateStory</string>
+	<key>RevenueCatAPIKey</key>
+	<string>appl_HRRlRRPEBZxQaUCaqfoNfVQdCEB</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-2238798128024414~3953506739</string>
+	<key>ITSAppUsesNonExemptEncryption</key>
+	<false/>
+	<key>SKAdNetworkItems</key>
+	<array>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>rev-cat.skadnetwork</string>
+		</dict>
+		<dict>
+			<key>SKAdNetworkIdentifier</key>
+			<string>cstr6suwn9.skadnetwork</string>
+		</dict>
+	</array>
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoads</key>
+		<true/>
+	</dict>
+</dict>
+</plist>
