@@ -1,0 +1,19 @@
+{
+  "name": "butterfly-ai-stories-functions",
+  "version": "1.0.0",
+  "description": "AWS Lambda functions for Butterfly AI Stories (device registration, story generation)",
+  "type": "module",
+  "main": "generateStory.js",
+  "scripts": {
+    "zip": "zip -r ../butterfly-functions.zip . -x '*.git*' -x 'node_modules/*'"
+  },
+  "dependencies": {
+    "@aws-sdk/client-api-gateway": "^3.0.0",
+    "@aws-sdk/client-dynamodb": "^3.0.0",
+    "@aws-sdk/client-secrets-manager": "^3.0.0",
+    "openai": "^4.0.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

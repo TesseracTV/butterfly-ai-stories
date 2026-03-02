@@ -2,6 +2,16 @@
 
 Node.js 18+ (ES modules). Deploy to AWS Lambda and attach to API Gateway.
 
+## Setup and deploy
+
+```bash
+cd functions
+npm install
+# Then zip the folder (including node_modules) and upload each handler to its Lambda, or use SAM/Serverless.
+```
+
+Each Lambda should have its **Handler** set to the filename + `.handler` (e.g. `generateStory.handler`, `deviceRegistration.handler`). Use Node 18+ runtime.
+
 ## Environment variables
 
 | Function | Variable | Description |

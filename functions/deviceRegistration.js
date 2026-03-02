@@ -1,8 +1,9 @@
 import { APIGateway } from '@aws-sdk/client-api-gateway';
 import { DynamoDB } from '@aws-sdk/client-dynamodb';
 
-const apigateway = new APIGateway();
-const dynamodb = new DynamoDB();
+const region = process.env.AWS_REGION || 'us-east-2';
+const apigateway = new APIGateway({ region });
+const dynamodb = new DynamoDB({ region });
 
 const corsHeaders = {
   'Content-Type': 'application/json',

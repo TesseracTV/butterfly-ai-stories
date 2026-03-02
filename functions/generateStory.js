@@ -2,7 +2,8 @@ import { SecretsManager } from '@aws-sdk/client-secrets-manager';
 import { DynamoDB } from '@aws-sdk/client-dynamodb';
 import OpenAI from 'openai';
 
-const dynamodb = new DynamoDB();
+const region = process.env.AWS_REGION || 'us-east-2';
+const dynamodb = new DynamoDB({ region });
 
 const corsHeaders = {
   'Content-Type': 'application/json',
@@ -41,7 +42,7 @@ export const handler = async (event) => {
       return { statusCode: 403, headers: corsHeaders, body: JSON.stringify({ message: 'Invalid API key' }) };
     }
 
-    const secretsManager = new SecretsManager({ region: process.env.AWS_REGION || 'us-east-2' });
+    const secretsManager = new SecretsManager({ region });
     const data = await secretsManager.getSecretValue({
       SecretId: process.env.OPENAI_SECRET_ARN || 'arn:aws:secretsmanager:us-east-2:976193230293:secret:openai_api_key-Tg3zFm',
     });
