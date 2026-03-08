@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Butterfly AI Stories – Transform Your Photos into Magical Stories</title>
+  <meta name="description" content="Create unique short stories from your photos with AI. Choose from children's stories, adventure tales, poetry, and more.">
+  <link rel="canonical" href="https://butterflyaistories.com/">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: linear-gradient(180deg, #f0f9f9 0%, #e8f4f4 50%, #fff 100%);
+      color: #1a1a1a;
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+    .container {
+      max-width: 720px;
+      margin: 0 auto;
+      padding: 2.5rem 1.5rem 3rem;
+      text-align: center;
+    }
+    .hero {
+      margin-bottom: 2.5rem;
+    }
+    h1 {
+      font-size: clamp(1.875rem, 5vw, 2.5rem);
+      font-weight: 700;
+      color: #2a7a74;
+      margin: 0 0 0.75rem;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+    }
+    .subhead {
+      font-size: 1.25rem;
+      font-weight: 500;
+      color: #333;
+      margin: 0 0 1rem;
+      letter-spacing: -0.01em;
+    }
+    .tagline {
+      font-size: 1rem;
+      color: #555;
+      margin: 0 auto 1.5rem;
+      max-width: 32em;
+      line-height: 1.6;
+    }
+    .app-badge {
+      display: inline-block;
+      margin: 0.5rem 0 0;
+    }
+    .app-badge img {
+      height: 44px;
+      width: auto;
+      display: block;
+    }
+    .app-badge:hover { opacity: 0.9; }
+    .screenshots-section {
+      margin: 2.5rem 0;
+    }
+    .screenshots-section h2 {
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: #666;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin: 0 0 1rem;
+    }
+    .screenshots {
+      display: flex;
+      flex-wrap: nowrap;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+    .screenshots img {
+      width: 160px;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+      border: 2px solid rgba(42, 122, 116, 0.2);
+      flex-shrink: 0;
+    }
+    .screenshots img:hover { box-shadow: 0 6px 16px rgba(0,0,0,0.18); }
+    @media (max-width: 720px) {
+      .screenshots img { width: calc(25% - 0.6rem); min-width: 0; }
+    }
+    @media (max-width: 480px) {
+      .screenshots { gap: 0.5rem; }
+      .screenshots img { width: calc(25% - 0.4rem); }
+    }
+    @media (prefers-color-scheme: dark) {
+      .screenshots img { border-color: rgba(91, 196, 188, 0.3); }
+    }
+    .links {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(42, 122, 116, 0.2);
+      font-size: 0.9rem;
+    }
+    .links a {
+      color: #2a7a74;
+      text-decoration: none;
+      margin: 0 0.75rem;
+    }
+    .links a:hover { text-decoration: underline; }
+    .footer {
+      margin-top: 2rem;
+      font-size: 0.85rem;
+      color: #666;
+    }
+    @media (prefers-color-scheme: dark) {
+      body { background: linear-gradient(180deg, #1a2525 0%, #0f1818 100%); color: #eee; }
+      .subhead { color: #ddd; }
+      .tagline { color: #bbb; }
+      h1 { color: #5bc4bc; }
+      .screenshots-section h2 { color: #999; }
+      .links a { color: #5bc4bc; }
+      .links { border-top-color: rgba(91, 196, 188, 0.3); }
+      .footer { color: #888; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <section class="hero">
+      <h1>Butterfly AI Stories</h1>
+      <p class="subhead">Turn Your Photos into Stories</p>
+      <p class="tagline">Choose any photo, select a style—children’s story, adventure, fantasy, or poetry—and receive a unique short story in seconds. Perfect for families and young readers.</p>
+      <a id="app-store-link" href="https://apps.apple.com/us/app/butterfly-ai-stories/id6739846656" class="app-badge" aria-label="Download on the App Store">
+        <img src="https://tools.applemediaservices.com/api/badges/download-on-the-app-store/black/en-us?size=standard&amp;releaseDate=1704067200" alt="Download on the App Store">
+      </a>
+    </section>
+
+    <section class="screenshots-section" aria-label="App preview">
+      <h2>See it in action</h2>
+      <div class="screenshots">
+        <img src="screenshots/1-create.png" alt="Create – pick a photo and story type" width="160" height="347">
+        <img src="screenshots/2-picker.png" alt="Photo picker" width="160" height="347">
+        <img src="screenshots/3-story.png" alt="Generated story" width="160" height="347">
+        <img src="screenshots/4-saved.png" alt="Saved stories" width="160" height="347">
+      </div>
+    </section>
+
+    <nav class="links" aria-label="Legal and support">
+      <a href="https://www.termsfeed.com/live/a268e3f8-700b-46d5-99b5-df092a7450b3" target="_blank" rel="noopener">Privacy Policy</a>
+      <a href="terms.html">Terms of Use</a>
+      <a href="mailto:support@lifetracker.life">Support</a>
+    </nav>
+
+    <p class="footer">© 2025 Butterfly AI Stories. All rights reserved.</p>
+  </div>
+</body>
+</html>

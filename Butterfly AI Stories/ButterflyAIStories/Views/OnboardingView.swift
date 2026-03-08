@@ -19,48 +19,51 @@ struct OnboardingView: View {
     var body: some View {
         TabView {
             ForEach(onboardingSteps) { step in
-                VStack(spacing: 20) {
+                VStack(spacing: 28) {
                     Image(systemName: step.image)
-                        .font(.system(size: 80))
+                        .font(.system(size: 72))
                         .foregroundStyle(Color("Puerto Rico 3"))
-                        .padding()
+                        .padding(.top, 20)
                     Text(step.title)
-                        .font(.title)
-                        .bold()
+                        .font(.title2.weight(.bold))
+                        .multilineTextAlignment(.center)
                     Text(step.description)
+                        .font(.body)
                         .multilineTextAlignment(.center)
                         .foregroundStyle(.secondary)
-                        .padding(.horizontal)
+                        .padding(.horizontal, 32)
                 }
+                .frame(maxWidth: 400)
                 .tag(step.id)
             }
-            VStack(spacing: 20) {
+            VStack(spacing: 28) {
                 Image(systemName: "butterfly.fill")
-                    .font(.system(size: 80))
+                    .font(.system(size: 72))
                     .foregroundStyle(Color("Puerto Rico 3"))
-                    .padding()
+                    .padding(.top, 20)
                 Text("Ready to Begin!")
-                    .font(.title)
-                    .bold()
+                    .font(.title2.weight(.bold))
                 Text("Start creating magical stories from your photos")
+                    .font(.body)
                     .multilineTextAlignment(.center)
                     .foregroundStyle(.secondary)
-                    .padding(.horizontal)
+                    .padding(.horizontal, 32)
                 Button {
                     hasCompletedOnboarding = true
                     dismiss()
                 } label: {
                     Text("Get Started")
-                        .font(.headline)
-                        .foregroundColor(.white)
+                        .font(.headline.weight(.semibold))
+                        .foregroundStyle(.white)
                         .frame(maxWidth: .infinity)
-                        .padding()
+                        .padding(.vertical, 16)
                         .background(Color("Puerto Rico 3"))
-                        .cornerRadius(10)
+                        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
                 }
                 .padding(.horizontal, 40)
-                .padding(.top, 20)
+                .padding(.top, 8)
             }
+            .frame(maxWidth: 400)
         }
         .tabViewStyle(.page)
         .indexViewStyle(.page(backgroundDisplayMode: .always))

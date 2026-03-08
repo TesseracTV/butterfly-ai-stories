@@ -16,6 +16,8 @@ class PointManager: ObservableObject {
 
     private let pointsPerAd = 1500
     let storyBaseCost = 200
+    /// Max points deducted per story (vision requests can report high token counts).
+    private let maxCostPerStory = 500
     private let tokenToPointRatio = 4
 
     private init() {
@@ -23,7 +25,8 @@ class PointManager: ObservableObject {
     }
 
     func deductPoints(tokens: Int) {
-        let pointCost = max(storyBaseCost, tokens / tokenToPointRatio)
+        let rawCost = max(storyBaseCost, tokens / tokenToPointRatio)
+        let pointCost = min(rawCost, maxCostPerStory)
         DispatchQueue.main.async {
             self.points = max(0, self.points - pointCost)
         }
@@ -46,6 +49,6 @@ class PointManager: ObservableObject {
     }
 
     func estimatedCost(forTokens tokens: Int) -> Int {
-        max(storyBaseCost, tokens / tokenToPointRatio)
+        min(max(storyBaseCost, tokens / tokenToPointRatio), maxCostPerStory)
     }
 }

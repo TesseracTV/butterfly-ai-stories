@@ -28,15 +28,22 @@ struct ContentView: View {
 
     var body: some View {
         NavigationStack {
-            ScrollView {
-                VStack(spacing: 25) {
-                    pointsSection
-                    imageSection
-                    storyTypePicker
-                    buttonSection
+            VStack(spacing: 0) {
+                pointsSection
+                    .padding(.top, 8)
+                ScrollView {
+                    VStack(spacing: 24) {
+                        imageSection
+                        storyTypePicker
+                        buttonSection
+                    }
+                    .padding(.vertical, 20)
+                    .padding(.bottom, 32)
                 }
             }
+            .background(Color(.systemGroupedBackground))
             .navigationTitle("Butterfly AI Stories")
+            .navigationBarTitleDisplayMode(.large)
             .sheet(isPresented: $isImagePickerPresented) {
                 ImagePicker(selectedImage: $selectedImage, sourceType: sourceType)
                     .edgesIgnoringSafeArea(.all)
@@ -87,33 +94,36 @@ struct ContentView: View {
 
     private var pointsSection: some View {
         HStack(spacing: horizontalSizeClass == .regular ? 20 : 12) {
-            HStack {
+            HStack(spacing: 6) {
                 Image(systemName: "star.fill")
-                    .foregroundColor(.yellow)
+                    .font(.body)
+                    .foregroundStyle(.yellow)
                 Text("\(pointManager.points) points")
                     .font(.headline)
+                    .foregroundStyle(.primary)
             }
             .frame(maxWidth: horizontalSizeClass == .regular ? nil : .infinity, alignment: .leading)
 
             Spacer()
 
-            Button {
-                showPointsOptions = true
-            } label: {
-                HStack {
-                    Image(systemName: "play.circle.fill")
-                    Text("Get Points")
-                }
-                .padding(.horizontal, 12)
-                .padding(.vertical, 8)
+            Label("Get Points", systemImage: "play.circle.fill")
+                .font(.subheadline.weight(.semibold))
+                .foregroundStyle(.white)
+                .padding(.horizontal, 16)
+                .padding(.vertical, 10)
+                .frame(minHeight: 44)
                 .background(Color("Puerto Rico 3"))
-                .foregroundColor(.primary)
-                .cornerRadius(20)
-            }
-            .buttonStyle(.plain)
+                .clipShape(Capsule())
+                .contentShape(Rectangle())
+                .onTapGesture(count: 1) {
+                    showingStoreView = true
+                }
         }
+        .padding(16)
         .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
-        .padding(.horizontal)
+        .background(Color(.secondarySystemGroupedBackground))
+        .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
+        .padding(.horizontal, 20)
     }
 
     private var imageSection: some View {
@@ -121,27 +131,38 @@ struct ContentView: View {
             if let image = selectedImage {
                 Image(uiImage: image)
                     .resizable()
-                    .scaledToFit()
+                    .scaledToFill()
                     .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
-                    .frame(height: 300)
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
+                    .frame(height: 280)
+                    .clipped()
             } else {
-                Image("preview-image")
-                    .resizable()
-                    .scaledToFit()
-                    .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
-                    .frame(height: 300)
-                    .cornerRadius(10)
-                    .shadow(radius: 5)
+                ZStack {
+                    RoundedRectangle(cornerRadius: 16, style: .continuous)
+                        .fill(Color(.tertiarySystemFill))
+                        .frame(height: 280)
+                    VStack(spacing: 12) {
+                        Image(systemName: "photo.on.rectangle.angled")
+                            .font(.system(size: 44))
+                            .foregroundStyle(.secondary)
+                        Text("Tap to add a photo")
+                            .font(.subheadline)
+                            .foregroundStyle(.secondary)
+                    }
                     .onAppear {
                         if selectedImage == nil {
                             selectedImage = UIImage(named: "preview-image")
                         }
                     }
+                }
             }
         }
-        .padding(.horizontal)
+        .clipShape(RoundedRectangle(cornerRadius: 16, style: .continuous))
+        .overlay(
+            RoundedRectangle(cornerRadius: 16, style: .continuous)
+                .strokeBorder(Color(.separator).opacity(0.5), lineWidth: 0.5)
+        )
+        .shadow(color: .black.opacity(0.08), radius: 12, x: 0, y: 4)
+        .padding(.horizontal, 20)
     }
 
     private var storyTypePicker: some View {
@@ -154,41 +175,41 @@ struct ContentView: View {
         } label: {
             HStack(spacing: 12) {
                 Image(systemName: "book.fill")
-                    .frame(width: 20)
-                    .foregroundStyle(Color("Sweet Gray"))
+                    .font(.body)
+                    .foregroundStyle(.white.opacity(0.9))
                 Text(selectedStoryType.rawValue)
-                    .fontWeight(.medium)
-                    .foregroundStyle(Color("Sweet Gray"))
+                    .font(.body.weight(.medium))
+                    .foregroundStyle(.white)
                 Spacer()
-                Image(systemName: "chevron.down")
-                    .font(.system(size: 14, weight: .bold))
-                    .foregroundStyle(Color("Sweet Gray"))
+                Image(systemName: "chevron.down.circle.fill")
+                    .font(.body)
+                    .foregroundStyle(.white.opacity(0.8))
             }
             .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
-            .padding()
-            .background(isGenerating ? Color("Puerto Rico 3").opacity(0.4) : Color("Puerto Rico 3").opacity(0.8))
-            .cornerRadius(10)
+            .padding(.horizontal, 16)
+            .padding(.vertical, 14)
+            .background(
+                RoundedRectangle(cornerRadius: 12, style: .continuous)
+                    .fill(isGenerating ? Color("Puerto Rico 3").opacity(0.5) : Color("Puerto Rico 3"))
+            )
         }
         .disabled(isGenerating)
-        .opacity(isGenerating ? 0.6 : 1)
-        .padding(.horizontal)
+        .opacity(isGenerating ? 0.7 : 1)
+        .padding(.horizontal, 20)
     }
 
     private var buttonSection: some View {
-        VStack(spacing: 15) {
+        VStack(spacing: 12) {
             Button {
                 showingImageSource = true
             } label: {
-                HStack {
-                    Image(systemName: "photo.fill")
-                    Text(selectedImage == nil ? "Select Photo" : "Change Photo")
-                }
-                .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
-                .padding()
-                .background(isGenerating ? Color("Sweet Gray").opacity(0.6) : Color("Sweet Gray"))
-                .foregroundColor(Color("Puerto Rico 3"))
-                .cornerRadius(10)
-                .shadow(radius: 3)
+                Label(selectedImage == nil ? "Select Photo" : "Change Photo", systemImage: "photo.fill")
+                    .font(.body.weight(.semibold))
+                    .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
+                    .padding(.vertical, 16)
+                    .background(Color(.secondarySystemGroupedBackground))
+                    .foregroundStyle(Color("Puerto Rico 3"))
+                    .clipShape(RoundedRectangle(cornerRadius: 12, style: .continuous))
             }
             .disabled(isGenerating)
             .opacity(isGenerating ? 0.6 : 1)
@@ -197,26 +218,28 @@ struct ContentView: View {
                 Button {
                     Task { await generateStory() }
                 } label: {
-                    HStack {
-                        Image(systemName: "wand.and.stars")
-                        Text("Generate Story")
+                    HStack(spacing: 8) {
                         if isGenerating {
-                            Spacer()
                             ProgressView()
                                 .tint(.white)
+                        } else {
+                            Image(systemName: "wand.and.stars")
                         }
+                        Text("Generate Story")
                     }
+                    .font(.body.weight(.semibold))
                     .frame(maxWidth: horizontalSizeClass == .regular ? 400 : .infinity)
-                    .padding()
-                    .background(isGenerating ? Color("Sweet Gray").opacity(0.6) : Color("Sweet Gray"))
-                    .foregroundColor(Color("Puerto Rico 3"))
-                    .cornerRadius(10)
-                    .shadow(radius: 3)
+                    .padding(.vertical, 16)
+                    .background(
+                        RoundedRectangle(cornerRadius: 12, style: .continuous)
+                            .fill(isGenerating ? Color("Puerto Rico 3").opacity(0.7) : Color("Puerto Rico 3"))
+                    )
+                    .foregroundStyle(.white)
                 }
                 .disabled(isGenerating)
             }
         }
-        .padding(.horizontal)
+        .padding(.horizontal, 20)
     }
 
     private func generateStory() async {

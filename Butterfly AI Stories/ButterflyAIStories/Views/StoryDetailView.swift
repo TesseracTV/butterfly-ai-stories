@@ -17,37 +17,58 @@ struct StoryDetailView: View {
     @State private var showingSaveAlert = false
     @State private var isSaved = false
 
+    private var parsedTitle: String? {
+        let lines = story.split(separator: "\n", omittingEmptySubsequences: false).map(String.init)
+        guard let first = lines.first?.trimmingCharacters(in: .whitespaces), !first.isEmpty else { return nil }
+        if first.hasPrefix("**") && first.hasSuffix("**") {
+            return String(first.dropFirst(2).dropLast(2)).trimmingCharacters(in: .whitespaces)
+        }
+        return first.count < 80 ? first : nil
+    }
+
+    private var storyBody: String {
+        guard let title = parsedTitle else { return story }
+        let lines = story.split(separator: "\n", omittingEmptySubsequences: false).map(String.init)
+        if lines.count <= 1 { return story }
+        return lines.dropFirst().joined(separator: "\n").trimmingCharacters(in: .whitespacesAndNewlines)
+    }
+
     var gradientColors: [Color] {
         switch colorScheme {
-        case .dark: return [.white.opacity(0.3), .clear, .black]
-        case .light: return [.black.opacity(0.3), .clear, .white]
+        case .dark: return [.black.opacity(0.5), .clear, .black.opacity(0.8)]
+        case .light: return [.black.opacity(0.4), .clear, .white.opacity(0.95)]
         @unknown default: return [.clear, .black.opacity(0.3)]
         }
     }
 
     var body: some View {
         VStack(spacing: 0) {
-            ZStack {
+            ZStack(alignment: .bottomLeading) {
                 Image(uiImage: image)
                     .resizable()
                     .scaledToFill()
-                    .frame(height: 300)
+                    .frame(height: 280)
                     .clipped()
                 LinearGradient(gradient: Gradient(colors: gradientColors), startPoint: .top, endPoint: .bottom)
             }
-            .frame(height: 300)
+            .frame(height: 280)
 
             ScrollView {
-                VStack(spacing: 0) {
-                    Text(story)
+                VStack(alignment: .leading, spacing: 16) {
+                    if let title = parsedTitle {
+                        Text(title)
+                            .font(.title2.weight(.bold))
+                            .foregroundStyle(.primary)
+                    }
+                    Text(parsedTitle != nil ? storyBody : story)
                         .font(.body)
-                        .lineSpacing(8)
-                        .frame(maxWidth: .infinity, alignment: .leading)
-                        .padding(.bottom, 8)
+                        .lineSpacing(10)
+                        .foregroundStyle(.primary)
                 }
-                .padding(.top, 8)
+                .frame(maxWidth: .infinity, alignment: .leading)
+                .padding(20)
+                .padding(.bottom, 32)
             }
-            .padding(.horizontal)
             .scrollIndicators(.hidden)
         }
         .onAppear {
@@ -58,10 +79,8 @@ struct StoryDetailView: View {
         .toolbar {
             ToolbarItem(placement: .navigationBarLeading) {
                 Button { dismiss() } label: {
-                    HStack {
-                        Image(systemName: "chevron.left")
-                        Text("Back")
-                    }
+                    Label("Back", systemImage: "chevron.left")
+                        .font(.body.weight(.medium))
                 }
             }
             ToolbarItem(placement: .navigationBarTrailing) {
@@ -69,6 +88,7 @@ struct StoryDetailView: View {
                     showingSaveAlert = true
                 } label: {
                     Image(systemName: isSaved ? "heart.fill" : "heart")
+                        .font(.title3)
                         .foregroundStyle(isSaved ? .red : .primary)
                 }
             }

@@ -59,17 +59,45 @@ class StoreManager: ObservableObject {
     @MainActor
     func fetchPackages() async {
         isLoading = true
+        print("[Butterfly] Store: fetchPackages started")
         #if canImport(RevenueCat)
-        do {
-            let offerings = try await Purchases.shared.offerings()
-            if let current = offerings.current ?? offerings.offering(identifier: "points_packages") {
-                revenueCatPackages = current.availablePackages
-                packages = revenueCatPackages.map {
-                    StorePackage(id: $0.identifier, identifier: $0.identifier, localizedPriceString: $0.localizedPriceString)
+        func doFetch() async {
+            do {
+                let offerings = try await Purchases.shared.offerings()
+                let offering = offerings.offering(identifier: "points_packages")
+                    ?? offerings.current
+                    ?? offerings.offering(identifier: "default")
+                    ?? offerings.all.values.first
+                if let offering = offering, !offering.availablePackages.isEmpty {
+                    revenueCatPackages = offering.availablePackages
+                    packages = revenueCatPackages.map {
+                        StorePackage(id: $0.identifier, identifier: $0.identifier, localizedPriceString: $0.localizedPriceString)
+                    }
+                    print("[Butterfly] RevenueCat: Loaded \(packages.count) packages from offering '\(offering.identifier)'")
+                } else {
+                    print("[Butterfly] RevenueCat: No packages. Offerings:")
+                    for (id, off) in offerings.all {
+                        print("[Butterfly]   - '\(id)': \(off.availablePackages.count) packages")
+                    }
+                    if offerings.all.isEmpty {
+                        print("[Butterfly] RevenueCat: offerings.all is empty. Add an offering and products in RevenueCat Dashboard.")
+                    } else if let off = offerings.offering(identifier: "points_packages"), off.availablePackages.isEmpty {
+                        print("[Butterfly] RevenueCat: 'points_packages' has 0 packages. Attach products in Dashboard.")
+                    }
                 }
+            } catch {
+                print("[Butterfly] RevenueCat error:", error.localizedDescription)
             }
-        } catch { }
+        }
+        await doFetch()
+        if packages.isEmpty {
+            try? await Task.sleep(nanoseconds: 1_500_000_000)
+            await doFetch()
+        }
+        #else
+        print("[Butterfly] RevenueCat SDK not linked. Add the RevenueCat package to the target.")
         #endif
+        print("[Butterfly] Store: fetchPackages done, packages.count = \(packages.count)")
         isLoading = false
     }
 }
